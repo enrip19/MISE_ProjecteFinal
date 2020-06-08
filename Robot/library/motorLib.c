@@ -12,6 +12,7 @@
 #include "motorLib.h"
 #include "uartLib.h"
 
+//baix nivell
 str_control arrayCreator(uint8_t id, uint8_t length, uint8_t instruccio, uint8_t address, uint8_t *p_array, uint8_t checkSum)       //funcio per crear larray que necessiten els motors
 {
     str_control control;                                                            //creem una array del tipus str_control (struct amb una array interna de 20 posicions) on escriurem
@@ -69,6 +70,15 @@ void send_Motor(uint8_t id, uint8_t length, uint8_t instruccio, uint8_t address,
     send_UART(Data_point);                                                          //enviem la instruccio als motors mitjnac,ant UART
 }
 
+//alt nivell
+void motorWrite_LDR(uint8_t id, uint8_t value){
+    char param [] = {value};                                                  //escribim els parametres (adrec,a i valor en aquest cas)
+    //uint8_t param_pointer;
+    uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
+    uint8_t address = LDR_ADR;                                                      //escribim l'adrec,a del registre on guardem el valor de ldr
+    uint8_t length = sizeof(param) + 3;                                             //instruccio + adreça + parametres + checksum
 
+    send_Motor(id, length, instruccio, address, param);                             //finalment enviem la dada per UART al motor
+}
 
 

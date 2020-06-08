@@ -13,7 +13,7 @@ void init_I2C (void){
     P6 -> SEL1 |= 0;
     /* I2C config */
     UCB1CTLW0 |= UCSWRST;
-    UCB1CTLW0 |= UCMST|UCMODE_3|UCSYNC|UCSSEL_2|UCSWRST;                 //MODO MASTER , USCI MODO I2C , SMCLK
+    UCB1CTLW0 |= UCMST|UCMODE_3|UCSYNC|UCSSEL_2|UCSWRST;                //MODO MASTER , USCI MODO I2C , SMCLK
     UCB1BR0=120;
     UCB1BR1=0 ;
 
@@ -55,26 +55,26 @@ void I2C_receive(uint8_t addr, uint8_t *buffer, uint8_t n_dades)
 
 //IRQ I2C
 void EUSCIB1_IRQHandler(void){//
-    uint16_t status = EUSCI_B1->IV;                                         //guardem el valor de IV a la variable status. Aixo cleareja totes les flags, en consultar-lo
+    uint16_t status = EUSCI_B1->IV;                                     //guardem el valor de IV a la variable status. Aixo cleareja totes les flags, en consultar-lo
     switch(status){
     case 0x16:
         if(RXByteCtr){
-          *PRxData++ = EUSCI_B1 -> RXBUF;                                   //guardem la dada al valor seguent on apunta PRxData
-          if(RXByteCtr == 1){                                               //Queda només 1 dada?
-               EUSCI_B1 -> CTLW0 |= UCTXSTP;                                //Llavors enviem un stop byte
+          *PRxData++ = EUSCI_B1 -> RXBUF;                               //guardem la dada al valor seguent on apunta PRxData
+          if(RXByteCtr == 1){                                           //Queda només 1 dada?
+               EUSCI_B1 -> CTLW0 |= UCTXSTP;                            //Llavors enviem un stop byte
           }
-          else{                                                             //en cas contrari
-             *PRxData = EUSCI_B1 -> RXBUF;                                  //guardem la dada rebuda a l'adrc,a de PRxData
+          else{                                                         //en cas contrari
+             *PRxData = EUSCI_B1 -> RXBUF;                              //guardem la dada rebuda a l'adrc,a de PRxData
           }
         }
           break;
     case 0x18:
         if(TXByteCtr){
-          EUSCI_B1 -> TXBUF = *PTxData++;                                   //Carreguem a TXBUFF la dada a enviar
+          EUSCI_B1 -> TXBUF = *PTxData++;                               //Carreguem a TXBUFF la dada a enviar
           TXByteCtr--;
           }
         else{
-         EUSCI_B1 -> CTLW0 |= UCTXSTP;                                   //I2C stop condition
+         EUSCI_B1 -> CTLW0 |= UCTXSTP;                                  //I2C stop condition
          /* PREGUNTA: PERQUE S'HA DE POSAR AIXO? */
          // Clear USCI_B1 TX int flag
          EUSCI_B1->IFG &= ~EUSCI_B_IFG_TXIFG;

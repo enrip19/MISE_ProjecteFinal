@@ -39,7 +39,7 @@ void Init_UART(void)
     P1DIR |= BIT3;
 
     UCA0CTL0 &= ~UCSWRST;                                   //Reactivem la línia de comunicacions sèrie
-    // UCA1IE |= UCRXIE;                                    //Aixo nomes sha dactivar quan tinguem la rutina de recepcio
+    UCA1IE |= UCRXIE;                                       //Aixo nomes sha dactivar quan tinguem la rutina de recepcio
 }
 
 void TXUAC0(byte TXData)
@@ -57,12 +57,21 @@ void send_UART(str_control *dataPointer){
 
     for(indexUART=0;indexUART<lengthArray;indexUART++){     //el for servira per enviar tota la array byte a byte per uart
         dada = dataPointer->array[indexUART];               //lectura de la dada que toca (ho sabem amb lindex) i la guardem a la variable denviament
-        if(dada == 0x0A){
-            break;
+        if(dada == 0x0A){                                   //en cas de trobar-nos amb un \n (o 0x0A) no escribim mes
+            break;                                          //aturem el for
         }
-        else{
+        else{                                               //en cas contrari:
             TXUAC0(dada);                                   //enviem la dada per uart
         }
     }
     delay(100);                                             //quan acabem esperem 100 ms ja que es el que ens demanen els motors (o emulador) entre trames
 }
+
+/*
+//ISR RX
+void EUSCIA0_IRQHandler(void){
+    EUSCI_A0 -> IE &= ~BIT0;                                 //desactivem interrupcions de Rx
+    RXData = EUSCI_A0 -> RXBUF;                             //llegim la dada que arriba al buffer de Rx
+    RXFlag = 1;                                             //activem la flag de recepcio de la UART
+    EUSCI_A0 -> IE |= BIT0;                                  //reactivem interrupcions de Rx
+}*/

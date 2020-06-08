@@ -16,12 +16,16 @@
 #ifndef LIBRARY_UARTLIB_H_
 #define LIBRARY_UARTLIB_H_
 
-//Variables
-typedef unsigned char byte;
+/*Variables*/
+//TX
 #define TXD0_READY (UCA0IFG & UCTXIFG)
-
-uint8_t length;
+typedef unsigned char byte;
+//motors TX
 uint16_t ucos16, ucbrf, ucbrs;
+
+//RX
+bool RXFlag;
+uint8_t RXData;
 
 
 //Functions

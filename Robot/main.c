@@ -27,9 +27,7 @@ const uint8_t arrayDades [] = {  //Array dades
     0xFF, 0xFF, 0X00, 0X04, 0x02, 0X03, 0x01, 0xF5
 };
 
-char param [] = {
-                           0x02, 0x03, 0x01
-};
+
 
 /*Daescripcio:
 */
@@ -56,7 +54,6 @@ char param [] = {
     //UART + Motors
     Init_UART();
     //oju! l'adrec,a forma part dels parametres i aqui lestem separant
-    length = sizeof(param) + 3;                                             //instruccio + adreça + parametres + checksum
 
     //LCD
     //maxims i minims del pwm
@@ -87,11 +84,12 @@ char param [] = {
     __DSB();                                                                // Ensures SLEEPONEXIT takes effect immediately
 
 
+
     //PROGRAMA
     while (1)
     {
         //UART
-        send_Motor(0x00, 0x04, 0x02, 0x03, 0x01);                           //funcio per enviar instruccions als motors
+        //send_Motor(id, length, instruccio, address, p_array);                           //funcio per enviar instruccions als motors
 
         ///(DEBUGGING)
         /*int j;
@@ -141,6 +139,7 @@ char param [] = {
 
                 ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;              // Start a new sampling/conversion
                 robot_print_var(newADC, pwm, 0,1);                          //printem el valor de l'ADC i el PWM a la columna 0 i linia 1
+                motorWrite_LDR(0x01, pwm);
             }
             else{                                                           //en cas d'apretar el boto de l'esquerra S1 (per apagar el led)
                 pwm=pwmMax+10;                                              //posem un valor de CCR1 major al de CCR0 fent que el valor de PWM sigui 0 de forma constant

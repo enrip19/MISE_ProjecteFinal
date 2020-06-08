@@ -74,9 +74,12 @@ void init_NVIC(void){
     NVIC->ISER[0]|= 1 << ADC14_IRQn;                                //Habilitem les interrupcions de l'ADC14
 
     /* I2C */
+    NVIC->ICPR[0] |= 1 << EUSCIB1_IRQn;                             //Borrem les possibles ISR's de la EUSCIB1
+    NVIC->ISER[0] |= 1 << EUSCIB1_IRQn;                             //Habilitem les interrupcions de la EUSCIB1
 
-    NVIC->ICPR[0] |= 1 << EUSCIB1_IRQn;                             //Borrem les possibles ISR's de la EUSCIB0
-    NVIC->ISER[0] |= 1 << EUSCIB1_IRQn;                             //Habilitem les interrupcions de la EUSCIB0
+    /* UART */
+    /*NVIC->ICPR[0] |= 1 << EUSCIA0_IRQn;                             //Borrem les possibless ISR's de la EUSCIA0
+    NVIC->ISER[0] |= 1 << EUSCIA0_IRQn;                             //Habilitem les interrupcions de la EUSCIA0*/
 }
 
 void init_portMapping(void){

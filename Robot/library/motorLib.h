@@ -12,10 +12,20 @@
 #include "stdio.h"
 #include <stdint.h>
 
+//defines de les instruccio dels motors
+#define WRITE_MOT 0x03
+
+//defines de les adreces dels motors
+#define LDR_ADR 0x2D
+
+
 //variables i structs
 typedef struct {
     char array[20] ; //array 5 parametres + 3 maxim
 }str_control;
+
+
+char param [] = {};
 
 //funcions
 uint8_t CheckSum;
@@ -24,6 +34,7 @@ str_control arrayCreator(uint8_t id, uint8_t length, uint8_t instruccio, uint8_t
 
 void send_Motor(uint8_t id, uint8_t length, uint8_t instruccio, uint8_t address, uint8_t *p_array);
 
+void motorWrite_LDR(uint8_t id, uint8_t value);
 
 
 #endif /* FUNCIONS_H_ */
