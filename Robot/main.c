@@ -21,7 +21,7 @@
 #include "library/uartLib.h"
 
 //uint8_t buffer[2];
-uint8_t byteCountTX=0;
+
 
 const uint8_t arrayDades [] = {  //Array dades
     0xFF, 0xFF, 0X00, 0X04, 0x02, 0X03, 0x01, 0xF5
@@ -53,22 +53,16 @@ char param [] = {
     __enable_interrupts();                                                  //habilitem les interrupcions
 
 
-    //UART
+    //UART + Motors
     Init_UART();
-    indexUart = 0;
+    //oju! l'adrec,a forma part dels parametres i aqui lestem separant
     length = sizeof(param) + 3;                                             //instruccio + adreça + parametres + checksum
-    memset(Data.array,'0', 20);
-    Data_point = &Data.array[0];
-    Data = arrayCreator(0x00, length, 0x04, 0x02, param);
 
     //LCD
     //maxims i minims del pwm
     sensibilitat = 8;                                                       //sensibilitat de la iluminacio
     pwmMax = 256;                                                           //maxim valor de inici de  ccr0
     pwm = 128;                                                              //valor de inici de ccr1
-
-
-
 
     init_lcd();                                                             //inicialtizem la LCD
     robot_print("Hellowda!!!",2,0);                                         //printem el missatge a la columna 2 fila de dalt
@@ -97,27 +91,15 @@ char param [] = {
     while (1)
     {
         //UART
-        if(byteCountTX >= length){
-            byteCountTX = 0;
-            dada = 0x0A;
+        send_Motor(0x00, 0x04, 0x02, 0x03, 0x01);                           //funcio per enviar instruccions als motors
+
+        ///(DEBUGGING)
+        /*int j;
+        uint8_t dada;
+        for(j=0; j<sizeof(arrayDades);j++){
+            dada = arrayDades[j];
             TXUAC0(dada);
-            delay(100);
-        }
-
-        else
-        {
-            if (indexUart >= 8){
-                indexUart=0;
-            }
-            else{
-                dada = Data_point -> array[indexUart]; //lectura de dades
-                TXUAC0(dada); //enviem dades
-                indexUart++;
-            }
-            byteCountTX++;
-        }
-
-
+        }*///
 
         //PWM + LCD
         delay(20);                                                          // Delay

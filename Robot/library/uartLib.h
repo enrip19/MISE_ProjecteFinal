@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "motorLib.h"
 
@@ -21,14 +22,12 @@ typedef unsigned char byte;
 
 uint8_t length;
 uint16_t ucos16, ucbrf, ucbrs;
-uint8_t dada;
-str_control *Data_point;
-str_control Data;
-int indexUart;
+
 
 //Functions
 void Init_UART(void);
 void TXUAC0(byte TXData);
+void send_UART(str_control *array);
 
 
 #endif /* LIBRARY_UARTLIB_H_ */
