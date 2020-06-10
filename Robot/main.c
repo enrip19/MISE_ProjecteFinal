@@ -100,6 +100,7 @@ const uint8_t arrayDades [] = {  //Array dades
         }*///
 
         //PWM + LCD
+        motorGO (0x01,50,0);
         delay(20);                                                          // Delay
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
             if(adcFlag==1){                                                 //si la interrupcio de ADC esta activa (per tant s'aixeca la flag)
@@ -140,7 +141,8 @@ const uint8_t arrayDades [] = {  //Array dades
                 ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;              // Start a new sampling/conversion
                 robot_print_var(newADC, pwm, 0,1);                          //printem el valor de l'ADC i el PWM a la columna 0 i linia 1
                 motorWrite_LDR(0x01, pwm);
-            }
+
+        }
             else{                                                           //en cas d'apretar el boto de l'esquerra S1 (per apagar el led)
                 pwm=pwmMax+10;                                              //posem un valor de CCR1 major al de CCR0 fent que el valor de PWM sigui 0 de forma constant
                 TA1CCR1=pwm;                                                //Apliquem el valor de CCR1 al seu registre
