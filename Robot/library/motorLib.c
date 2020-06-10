@@ -83,8 +83,6 @@ void motorWrite_LDR(uint8_t id, uint8_t value){
 
 void  motorGO (uint8_t id, float vel, bool direccion){
 
-
-
      vel=vel/100;                                                                   //Calculamos el valor del porcentaje
      uint16_t velocidad=(vel)*velmax;                                                //Obtenemos el valor equivalente de la velocidad, respecto del valor maximo
      uint8_t velhexL= velocidad;                                                    //Hacemos un cast de la variable velocidad, ya que esta ocupa dos registros del motor
@@ -112,6 +110,16 @@ void  motorGO (uint8_t id, float vel, bool direccion){
                    send_Motor(id, length, instruccio, address, param);}
 
      }
+
+void robotGO (float velocity,bool direcction){
+    if (direcction){
+    motorGO (0x01,velocity, 0);
+    motorGO (0x02,velocity, 1);}
+    else
+        {motorGO (0x01,velocity, 1);
+        motorGO (0x02,velocity, 0);}
+}
+
 
 
 

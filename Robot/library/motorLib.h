@@ -47,6 +47,8 @@ void send_Motor(uint8_t id, uint8_t length, uint8_t instruccio, uint8_t address,
 void motorWrite_LDR(uint8_t id, uint8_t value);
 
 void  motorGO (uint8_t id, float vel, bool direccion);
+void robotGO (float velocity,bool direcction);
+
 
 
 #endif /* FUNCIONS_H_ */

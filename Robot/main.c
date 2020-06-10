@@ -100,7 +100,7 @@ const uint8_t arrayDades [] = {  //Array dades
         }*///
 
         //PWM + LCD
-        motorGO (0x01,50,0);
+        robotGO (40,0);
         delay(20);                                                          // Delay
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
             if(adcFlag==1){                                                 //si la interrupcio de ADC esta activa (per tant s'aixeca la flag)
