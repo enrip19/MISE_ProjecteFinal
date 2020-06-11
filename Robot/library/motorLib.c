@@ -81,4 +81,46 @@ void motorWrite_LDR(uint8_t id, uint8_t value){
     send_Motor(id, length, instruccio, address, param);                             //finalment enviem la dada per UART al motor
 }
 
+void  motorGO (uint8_t id, float vel, bool direccion){
+
+     vel=vel/100;                                                                   //Calculamos el valor del porcentaje
+     uint16_t velocidad=(vel)*velmax;                                                //Obtenemos el valor equivalente de la velocidad, respecto del valor maximo
+     uint8_t velhexL= velocidad;                                                    //Hacemos un cast de la variable velocidad, ya que esta ocupa dos registros del motor
+     uint8_t velhexH=velocidad>>8;
+
+     char param [] = {velhexL};
+     uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
+     uint8_t address = MOVING_SPEED;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
+     uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
+     send_Motor(id, length, instruccio, address, param);
+
+    if(direccion){
+              velhexH=velhexH^front;
+                  char param [] = {velhexH};
+                  uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
+                  uint8_t address = TURN_DIRECTION;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
+                  uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
+                  send_Motor(id, length, instruccio, address, param);}
+           else {
+               velhexH=velhexH&back;
+                   char param [] = {velhexH};
+                   uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
+                   uint8_t address = TURN_DIRECTION;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
+                   uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
+                   send_Motor(id, length, instruccio, address, param);}
+
+     }
+
+void robotGO (float velocity,bool direcction){
+    if (direcction){
+    motorGO (0x01,velocity, 0);
+    motorGO (0x02,velocity, 1);}
+    else
+        {motorGO (0x01,velocity, 1);
+        motorGO (0x02,velocity, 0);}
+}
+
+
+
+
 

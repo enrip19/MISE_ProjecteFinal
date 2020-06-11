@@ -121,6 +121,7 @@ const uint8_t arrayDades [] = {  //Array dades
 
 
         //PWM + LCD
+        robotGO (40,0);
         delay(20);                                                          // Delay
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
             adcR = read_LDR(newADCR);                                       //llegim el valor de ldr dret
@@ -142,6 +143,7 @@ const uint8_t arrayDades [] = {  //Array dades
         }
         ADC14->IER0 |= ADC14_IER0_IE1;
         ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;              // Start a new sampling/conversion
+
 
         __sleep();                                                          //Posem el sistema a dormir (activem LPM0). En aquest cas ho hem configurat a l'inici del while
         __no_operation();                                                   // For debugger
