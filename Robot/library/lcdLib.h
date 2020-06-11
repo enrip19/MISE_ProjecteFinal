@@ -45,7 +45,7 @@ void lcd_clear(void);
 void lcd_setCursor(uint8_t col, uint8_t row);
 void robot_print(char * _string, uint8_t col, uint8_t row);
 void robot_print_var(uint8_t var0, uint8_t var1, uint8_t col, uint8_t row);
-void robot_LDC (void);
-void robot_print_variables(uint8_t var0, uint8_t var1, uint8_t var2, uint8_t var3);
+void robot_print_motor(uint8_t var0, uint8_t var1);
+void robot_print_LDR(uint8_t var2, uint8_t var3);
 
 #endif /* LIBRARY_LCDLIB_H_ */

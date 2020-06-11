@@ -11,6 +11,7 @@
 
 #include "motorLib.h"
 #include "uartLib.h"
+#include "lcdLib.h"
 
 //baix nivell
 str_control arrayCreator(uint8_t id, uint8_t length, uint8_t instruccio, uint8_t address, uint8_t *p_array, uint8_t checkSum)       //funcio per crear larray que necessiten els motors
@@ -149,6 +150,7 @@ void robotGO (float velocity,bool direcction, float gir){
         motorGO (0x01,velL, 1);
         motorGO (0x02,velR, 0);
     }
+    robot_print_motor(velL,velR);
 }
 
 

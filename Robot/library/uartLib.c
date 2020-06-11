@@ -64,7 +64,7 @@ void send_UART(str_control *dataPointer){
             TXUAC0(dada);                                   //enviem la dada per uart
         }
     }
-    delay(100);                                             //quan acabem esperem 100 ms ja que es el que ens demanen els motors (o emulador) entre trames
+    delay(40);                                             //quan acabem esperem 100 ms ja que es el que ens demanen els motors (o emulador) entre trames (hem forc,at la maquina per ferlo funcionar mes rapid)
 }
 
 /*

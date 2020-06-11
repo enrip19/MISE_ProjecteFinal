@@ -81,8 +81,7 @@ const uint8_t arrayDades [] = {  //Array dades
     __DSB();                                                                // Ensures SLEEPONEXIT takes effect immediately
 
 
-    float var;
-    int8_t varnum;
+
     //PROGRAMA
     while (1)
     {
@@ -101,23 +100,19 @@ const uint8_t arrayDades [] = {  //Array dades
         varnum = (uint8_t) var;*/
 
         //PWM + LCD
-        robotGO(100,0, varnum);
+        robotGO(100,0, 50);
 
-        delay(20);                                                          // Delay
+
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
             adcR = read_LDR(newADCR);                                       //llegim el valor de ldr dret
             adcR = (adcR+oldadcR)>>1;                                       //fem una mitjana entre el valor actual i lanterior per estabilitzar la senyal
+            motorWrite_LDR(0x01, adcR);
+
+
             adcL = read_LDR(newADCL);
             adcL = (adcL+oldadcL)>>1;
-
-            //robot_print_var(adcL,adcR, 6,1);
-
-
-            robot_print_variables(200,200,100,100);
-
-
-            motorWrite_LDR(0x01, adcR);
             motorWrite_LDR(0x02, adcL);
+            robot_print_LDR(adcL, adcR);
 
             oldadcR = adcR;                                                 //propaguem la senyal
             oldadcL = adcL;

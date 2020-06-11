@@ -137,28 +137,29 @@ void robot_print_var(uint8_t var0, uint8_t var1, uint8_t col, uint8_t row){ //aq
 
 
 
-void robot_print_variables(uint8_t var0, uint8_t var1, uint8_t var2, uint8_t var3){
+void robot_print_motor(uint8_t var0, uint8_t var1){
     uint8_t mida_txt;
     char text[50];
 
-    lcd_setCursor(0,0);
-    delay(10);                                                          //esperem a que processi la lcd
+    lcd_setCursor(0,0);                                                        //esperem a que processi la lcd
     mida_txt= sprintf(text,"ML:%d%%   ", var0);              //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
     lcd_print(text, mida_txt);                                          //printem la variable text
-    delay(10);
-    lcd_setCursor(8,0);
-    delay(10);                                                          //esperem a que processi la lcd
+    lcd_setCursor(8,0);                                                        //esperem a que processi la lcd
     mida_txt = sprintf(text, "MR:%d%%   ",var1);              //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
     lcd_print(text, mida_txt);                                          //printem la variable text
-    delay(10);
-    lcd_setCursor(0,1);
-    delay(10);                                                          //esperem a que processi la lcd
+    lcd_setCursor(0,1);                                                        //esperem a que processi la lcd
+
+}
+
+void robot_print_LDR(uint8_t var2, uint8_t var3){
+    uint8_t mida_txt;
+    char text[50];
+
     mida_txt = sprintf(text, "ADCL:%d   ",var2);              //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
     lcd_print(text, mida_txt);                                          //printem la variable text
-    delay(10);
-    lcd_setCursor(8,1);
-    delay(10);                                                          //esperem a que processi la lcd
+    lcd_setCursor(8,1);                                                       //esperem a que processi la lcd
     mida_txt = sprintf(text, "ADCR:%d     ",var3);              //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
     lcd_print(text, mida_txt);                                          //printem la variable text
-    delay(10);
+    lcd_setCursor(16, 0);
+
 }
