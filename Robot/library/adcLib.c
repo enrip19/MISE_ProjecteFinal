@@ -9,7 +9,7 @@
 
 
 
-void init_ADC(void){
+void  (void){
     // Configure P5.4 for ADC (com a secondary function)
     P5->SEL1 |= BIT4;
     P5->SEL0 |= BIT4;
