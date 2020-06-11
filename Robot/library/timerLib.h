@@ -12,7 +12,7 @@
 #ifndef LIBRARY_TIMERLIB_H_
 #define LIBRARY_TIMERLIB_H_
 
-uint16_t pwm, pwmMax;
+
 
 void init_TA0(void);
 void init_TA1(uint16_t ccr0Max, uint16_t ccr1);
