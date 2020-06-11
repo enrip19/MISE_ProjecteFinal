@@ -17,12 +17,6 @@ bool adcFlagL, adcFlagR, adcFlag;
 uint16_t newADCL, newADCR;
 uint8_t adcR, adcL, oldadcR, oldadcL;
 
-typedef struct{
-    uint16_t motVel;
-    uint16_t diff;
-}str_recursive;
-
-
 void init_ADC(void);
 uint16_t read_LDR(uint16_t newADC);
 
