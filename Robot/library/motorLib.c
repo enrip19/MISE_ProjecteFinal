@@ -111,13 +111,44 @@ void  motorGO (uint8_t id, float vel, bool direccion){
 
      }
 
-void robotGO (float velocity,bool direcction){
+void robotGO (float velocity,bool direcction, float gir){
+
+    //conversio de percentatge a 8bits
+
+    uint8_t vel, velR, velL, deltaL, deltaR, girVar;
+    vel = (uint8_t) velocity;
+    //girVar = (uint8_t) gir;
+
+    if (gir > 0){
+        girVar = (uint8_t) gir;
+        deltaL = 0;
+        deltaR = girVar;
+    }
+    else if (gir < 0){
+        girVar = (uint8_t) abs(gir);
+        deltaR = 0;
+        deltaL = girVar;
+    }
+    else if(gir==100){
+        girVar = (uint8_t) gir;
+        deltaL = 0;
+        deltaR = girVar;
+    }
+    else{
+        deltaR = 0;
+        deltaL = 0;
+    }
+    velL = vel - deltaL;
+    velR = vel - deltaR;
+
     if (direcction){
-    motorGO (0x01,velocity, 0);
-    motorGO (0x02,velocity, 1);}
-    else
-        {motorGO (0x01,velocity, 1);
-        motorGO (0x02,velocity, 0);}
+        motorGO (0x01,velL, 0);
+        motorGO (0x02,velR, 1);
+    }
+    else{
+        motorGO (0x01,velL, 1);
+        motorGO (0x02,velR, 0);
+    }
 }
 
 

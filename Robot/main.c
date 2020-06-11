@@ -42,24 +42,10 @@ const uint8_t arrayDades [] = {  //Array dades
                  WDT_A_CTL_HOLD;
     __disable_interrupt();
 
-    str_recursive recursive;
-    str_recursive *p_recursive;
-    p_recursive = &recursive;
-
-    //LCD
-    //maxims i minims del pwm
-    uint8_t sensibilitat = 8;                                                       //sensibilitat de la iluminacio
-    uint16_t motVelMax = 256;                                                           //maxim valor de inici de  ccr0
-    p_recursive -> motVel = 128;                                                             //valor de inici de ccr1
-    uint16_t motVel = 128;
-    //p_recursive -> diff= 0;
-
     init_ucs_12MHz();                                                       //inicialitzem el rellotge SMCLK a 12 MHz
     init_TA0();                                                             //inicialitzem TimerA0
-    init_TA1(motVelMax,motVel);                                                  //inicialitzem el TimerA1
     init_GPIO();                                                            //inicialitzem botons i leds
     init_ADC();                                                             //inicialitzem ADC14
-    init_portMapping();                                                     //inicilaitzem el portmapping del led verd (P2.1) amb el PWM
     init_I2C();                                                             //inicialitzem I2C
 
     init_NVIC();                                                            //inicialitzem NVIC (interrupcions)
@@ -95,7 +81,8 @@ const uint8_t arrayDades [] = {  //Array dades
     __DSB();                                                                // Ensures SLEEPONEXIT takes effect immediately
 
 
-
+    float var;
+    int8_t varnum;
     //PROGRAMA
     while (1)
     {
@@ -109,19 +96,13 @@ const uint8_t arrayDades [] = {  //Array dades
             dada = arrayDades[j];
             TXUAC0(dada);
         }*///
-        /*adcFlag = 0;                                            //Abaixem la flag de l'accelerometre
-        ADC14->IER0 |= ADC14_IER0_IE1;                          // Enable ADC conv complete interrupt
-    }
 
-    ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;              // Start a new sampling/conversion
-    printf("%d; %d \n",diff, motVel);
-    robot_print_var(newADCL, newADCR, 0,1);                          //printem el valor de l'ADC i el motVel a la columna 0 i linia 1
-    motorWrite_LDR(0x01, newADCL);
-    motorWrite_LDR(0x02, newADCR);*/
-
+        /*scanf("%f", &var);
+        varnum = (uint8_t) var;*/
 
         //PWM + LCD
-        robotGO (40,0);
+        robotGO(100,0, varnum);
+
         delay(20);                                                          // Delay
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
             adcR = read_LDR(newADCR);                                       //llegim el valor de ldr dret
@@ -140,8 +121,6 @@ const uint8_t arrayDades [] = {  //Array dades
 
             oldadcR = adcR;                                                 //propaguem la senyal
             oldadcL = adcL;
-
-
         }
         else{                                                           //en cas d'apretar el boto de l'esquerra S1 (per apagar el led)
             robot_print("Push S2 button",0,1);                          //printem un missatge d'espera a la columna 0 i linia 1

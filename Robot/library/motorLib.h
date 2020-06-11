@@ -27,6 +27,7 @@
 #define front 0x04
 #define back  0xFB
 #define velmax 0x3FF
+#define girmax 255
 
 
 //variables i structs
@@ -47,7 +48,7 @@ void send_Motor(uint8_t id, uint8_t length, uint8_t instruccio, uint8_t address,
 void motorWrite_LDR(uint8_t id, uint8_t value);
 
 void  motorGO (uint8_t id, float vel, bool direccion);
-void robotGO (float velocity,bool direcction);
+void robotGO (float velocity,bool direcction, float gir);
 
 
 
