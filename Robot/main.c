@@ -36,7 +36,7 @@ const uint8_t arrayDades [] = {  //Array dades
 */
 
 
- int main(void) {
+    int main(void) {
 
     WDT_A->CTL = WDT_A_CTL_PW |                                             // Stop WDT
                  WDT_A_CTL_HOLD;
@@ -86,7 +86,7 @@ const uint8_t arrayDades [] = {  //Array dades
     delay(5000);                                                            //esperem 5sec per poder veure el missatge
 
     lcd_clear();                                                            //borrem tota la pantalla
-    robot_print("Valor ADC L i R:",0,0);                                    //printem el missatge a la columna 0 fila de baix
+
 
     // PART DE LDR
     ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;                          // Start sampling/conversion
@@ -129,7 +129,12 @@ const uint8_t arrayDades [] = {  //Array dades
             adcL = read_LDR(newADCL);
             adcL = (adcL+oldadcL)>>1;
 
-            robot_print_var(adcL,adcR, 0,1);
+            //robot_print_var(adcL,adcR, 6,1);
+
+
+            robot_print_variables(200,200,100,100);
+
+
             motorWrite_LDR(0x01, adcR);
             motorWrite_LDR(0x02, adcL);
 
