@@ -156,6 +156,7 @@ void robotGO (float velocity,bool direcction, float gir){
         motorGO (0x01,velL, 1);
         motorGO (0x02,velR, 0);
     }
+
     robot_print_motor(velL,velR);
 }
 
