@@ -101,24 +101,22 @@ bool sentitButton = 0;
             case 3: //left
                 if(velButton>=0){
                     girButton-=10;
+                    if(girButton <= -velButton) girButton = -velButton;
                 }
                 else if(velButton<0){
                     girButton+=10;
+                    if(girButton >= -velButton) girButton = -velButton;
                 }
-
-                if(girButton >= velButton) girButton = velButton;
-                else if(girButton <= -velButton) girButton = -velButton;
                 break;
             case 4: //right
                 if(velButton>=0){
                     girButton+=10;
+                    if(girButton >= velButton) girButton = velButton;
                 }
                 else if(velButton<0){
                     girButton-=10;
+                    if(girButton <= velButton) girButton = velButton;
                 }
-
-                if(girButton >= velButton) girButton = velButton;
-                else if(girButton <= -velButton) girButton = -velButton;
                 break;
             default:
                 velButton = velButton;
@@ -133,8 +131,8 @@ bool sentitButton = 0;
         if(velButton >= 100) velButton = 100;
         else if(velButton <= -100) velButton = -100;
 
-
-
+        /*if(girButton >= velButton) girButton = velButton;
+        else if(girButton <= -velButton) girButton = -velButton;*/
 
 
         controlFlag = 0;
@@ -162,7 +160,7 @@ bool sentitButton = 0;
             oldadcL = adcL;
         }
         else{                                                           //en cas d'apretar el boto de l'esquerra S1 (per apagar el led)
-            robot_print("Push S2 button",0,1);                          //printem un missatge d'espera a la columna 0 i linia 1
+            robot_print("Push S2 button   ",0,1);                          //printem un missatge d'espera a la columna 0 i linia 1
         }
         ADC14->IER0 |= ADC14_IER0_IE1;
         ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;              // Start a new sampling/conversion
