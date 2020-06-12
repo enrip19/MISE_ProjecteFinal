@@ -8,9 +8,10 @@
 #include "lcdLib.h"
 #include "timerLib.h"
 #include "i2cLib.h"
+#include "modesLib.h"
 
 void lcd_send_nibble_cmd(uint8_t dada){                                 //funcion para enviar las direccion del esclavo
-    uint8_t buffer[2];                                                  //definimos el tama�o del buffer
+    uint8_t buffer[2];                                                  //definimos el tamaï¿½o del buffer
     uint8_t dada_I2C_H;                                                 //dato a enviar en este caso sera el de inicializacion
     dada_I2C_H = dada & 0xF0;                                           //nuestra variable es de 4 bit por lo tanto operamos con and el valor 11110000 y de esta manera tendremos nuestro dato de 4 bits en un byte
                                                                         //Rellenamos los valores del buffer con las instrucciones de la lcd
@@ -141,13 +142,21 @@ void robot_print_motor(uint8_t var0, uint8_t var1){
     uint8_t mida_txt;
     char text[50];
 
-    lcd_setCursor(0,0);                                                        //esperem a que processi la lcd
-    mida_txt= sprintf(text,"ML:%d%%   ", var0);              //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
+    lcd_setCursor(0,0);                                                 //esperem a que processi la lcd
+    mida_txt= sprintf(text,"ML:%d%%   ", var0);                         //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
     lcd_print(text, mida_txt);                                          //printem la variable text
-    lcd_setCursor(8,0);                                                        //esperem a que processi la lcd
-    mida_txt = sprintf(text, "MR:%d%%   ",var1);              //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
+    lcd_setCursor(8,0);                                                 //esperem a que processi la lcd
+    mida_txt = sprintf(text, "MR:%d%%   ",var1);                        //mida_text reb la mida de la array que conte la string que guardem a text. La string sera en decimal la "var0 - var1"
     lcd_print(text, mida_txt);                                          //printem la variable text
-    lcd_setCursor(0,1);                                                        //esperem a que processi la lcd
+    lcd_setCursor(15,0);                                                //posem el cursor a dalt a la dreta
+
+    if(velButtonF == 0) lcd_send_byte_dada(0xFF);                        //si estem parats, enviem la senyal dstop
+    else{
+        if(sentitButton == 1) lcd_send_byte_dada(0x7E);                     //si el sentit es endevant printem fletxa dreta
+        else if(sentitButton == 0) lcd_send_byte_dada(0x7F);                //si el sentit es enderrera printem fletxa esquerra
+    }
+
+        lcd_setCursor(14,0);
 
 }
 

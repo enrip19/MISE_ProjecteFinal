@@ -19,6 +19,7 @@
 #include "library/lcdLib.h"
 #include "library/motorLib.h"
 #include "library/uartLib.h"
+#include "library/modesLib.h"
 
 //uint8_t buffer[2];
 
@@ -26,14 +27,6 @@
 const uint8_t arrayDades [] = {  //Array dades
     0xFF, 0xFF, 0X00, 0X04, 0x02, 0X03, 0x01, 0xF5
 };
-
-
-
-float velButtonF = 0;
-int velButton = 0;
-float girButtonF = 0;
-int girButton = 0;
-bool sentitButton = 0;
 
 
 /*Daescripcio:
@@ -89,60 +82,7 @@ bool sentitButton = 0;
     //PROGRAMA
     while (1)
     {
-        //MODE DE CONTROL PER POLSADORS////////////////////////////////////////////////////////////////
-        //robotGO(100,0, 50);
-        switch (controlFlag) {
-            case 1: //forward
-                velButton+=10;
-                break;
-            case 2: //backward
-                velButton-=10;
-                break;
-            case 3: //left
-                if(velButton>=0){
-                    girButton-=10;
-                    if(girButton <= -velButton) girButton = -velButton;
-                }
-                else if(velButton<0){
-                    girButton+=10;
-                    if(girButton >= -velButton) girButton = -velButton;
-                }
-                break;
-            case 4: //right
-                if(velButton>=0){
-                    girButton+=10;
-                    if(girButton >= velButton) girButton = velButton;
-                }
-                else if(velButton<0){
-                    girButton-=10;
-                    if(girButton <= velButton) girButton = velButton;
-                }
-                break;
-            default:
-                velButton = velButton;
-                girButton = girButton;
-                sentitButton = sentitButton;
-                break;
-        }
-        //printf("velButton: %d\n", velButton);
-        if(velButton<=0) sentitButton = 0;
-        else if(velButton>0) sentitButton = 1;
-
-        if(velButton >= 100) velButton = 100;
-        else if(velButton <= -100) velButton = -100;
-
-        /*if(girButton >= velButton) girButton = velButton;
-        else if(girButton <= -velButton) girButton = -velButton;*/
-
-
-        controlFlag = 0;
-        velButtonF = (float) abs(velButton);
-        girButtonF = (float) girButton;
-        //printf("velButtonF: %f, sentitButton: %d, girButtonF: %f\n",velButtonF,sentitButton,girButtonF);
-        robotGO(velButtonF, sentitButton, girButtonF);
-
-        P4->IE |= BIT1 | BIT2 | BIT3 | BIT4;
-        ///////////////////////////////////////////////////////////////////////////////////////////////
+        buttonMode();
 
         //PWM + LCD////////////////////////////////////////////////////////////////////////////////////
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
