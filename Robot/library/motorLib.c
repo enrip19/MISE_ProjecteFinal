@@ -127,20 +127,23 @@ void robotGO (float velocity,bool direcction, float gir){
     }
     else if (gir < 0){
         girVar = (uint8_t) abs(gir);
+
         deltaR = 0;
         deltaL = girVar;
-    }
-    else if(gir==100){
-        girVar = (uint8_t) gir;
-        deltaL = 0;
-        deltaR = girVar;
+        //printf("girVar: %d, deltaL: %d\n",girVar, deltaL);
     }
     else{
         deltaR = 0;
         deltaL = 0;
     }
+
+
     velL = vel - deltaL;
     velR = vel - deltaR;
+    printf("vel: %d, velL: %d, velR: %d\n",vel, velL, velR);
+
+
+
 
     if (direcction){
         motorGO (0x01,velL, 0);

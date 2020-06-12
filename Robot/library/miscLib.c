@@ -23,13 +23,15 @@ uint8_t init_ucs_12MHz(){ //configuracio MCLK a 12MHz
     //ACLK queda por defecto a LFXT, que es el cuarzo de 32kHz
     while (!(CS->STAT & (CS_STAT_MCLK_READY | CS_STAT_SMCLK_READY | CS_STAT_ACLK_READY))); //me espero hasta que el registro CSSTAT me indique que todos mis relojes se han estabilizado
 
-      //  Activar los pines siguientes para comprobar y debugar los relojes -->
+      /*//  Activar los pines siguientes para comprobar y debugar los relojes -->
       P4SEL0 |= BIT2|BIT3|BIT4; //activo funciones alternativas primarias MCLK (P4.3), HSMCLK (P4.4) y ACLK (P4.2),
       //para poder observar los relojes con el osciloscopio.
       // <-- Volver a comentar una vez comprobado que los relojes estan bien configurados.
       //Los correspondientes bits en P4SEL1 han de estar a 0, que es su valor por defecto al iniciar el micro
       P4DIR |=BIT2|BIT3|BIT4;   //activo salida MCLK (P4.3), HSMCLK (P4.4) y ACLK (P4.2)
       // <-- Volver a comentar una vez comprobado que los relojes estan bien configurados.
+       * NO HO ACTIVEM JA QUE SINO NO FUNCIONEN ELS POLSADORS
+       */
 
      /*En este punto, tenemos:
       * MCLK = 24 MHz
@@ -56,6 +58,14 @@ void init_GPIO(void){
     P1->IE |= BIT4 | BIT1;                                          //Habilitem interrupcions de P1
     P1->IFG = 0;                                                    //Fem un clear de totes les flags de P1
 
+    /* Botons control robot */
+    P4->REN |= BIT1 | BIT2 | BIT3 | BIT4;
+    P4->OUT |= BIT1 | BIT2 | BIT3 | BIT4;
+    P4->IE |= BIT1 | BIT2 | BIT3 | BIT4;
+    P4->IFG = 0;
+
+    controlFlag = 0;
+
     buttonLFlag = 0;
     buttonRFlag = 0;
 }
@@ -69,6 +79,10 @@ void init_NVIC(void){
     NVIC->ICPR[1]|=BIT3;                                            //Borrem les posibles ISR's dels botons (P1)
     NVIC->ISER[1]|=BIT3;                                            //Habilitem les interrupcions dels botons (P1)
 
+    /* Botons control robot */
+    NVIC->ICPR[1] |= BIT6;
+    NVIC->ISER[1] |= BIT6;
+
     /* ADC14 */
     NVIC->ICPR[0]|= 1 << ADC14_IRQn;                                //Borrem les possibles ISR's de l'ADC14
     NVIC->ISER[0]|= 1 << ADC14_IRQn;                                //Habilitem les interrupcions de l'ADC14
@@ -76,6 +90,7 @@ void init_NVIC(void){
     /* I2C */
     NVIC->ICPR[0] |= 1 << EUSCIB1_IRQn;                             //Borrem les possibles ISR's de la EUSCIB1
     NVIC->ISER[0] |= 1 << EUSCIB1_IRQn;                             //Habilitem les interrupcions de la EUSCIB1
+
 
     /* UART */
     /*NVIC->ICPR[0] |= 1 << EUSCIA0_IRQn;                             //Borrem les possibless ISR's de la EUSCIA0
@@ -104,4 +119,27 @@ void PORT1_IRQHandler(void){
 
     }
     P1->IE |= BIT4 | BIT1;                                          //Tornem a habilitar les interrupcions de P1
+}
+
+void PORT4_IRQHandler(void){
+    uint8_t status = P4IV;
+     P4->IE = 0;
+    switch (status) {
+        case 0x04:
+            controlFlag = 1;
+            //printf("upFlag\n");
+            break;
+        case 0x06:
+            controlFlag = 2;
+            //printf("downFlag\n");
+            break;
+        case 0x08:
+            controlFlag = 3;
+            //printf("leftFlag\n");
+            break;
+        case 0x0A:
+            controlFlag = 4;
+            //printf("rightFlag\n");
+            break;
+    }
 }
