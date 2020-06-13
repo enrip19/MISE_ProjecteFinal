@@ -34,6 +34,8 @@
 /* variables per la lcd */
 uint8_t text[50];
 uint8_t mida_txt;
+uint8_t cursor;
+bool enter;
 
 /* funcions de la lcd*/
 void lcd_send_nibble_cmd(uint8_t dada);
@@ -45,6 +47,8 @@ void lcd_clear(void);
 void lcd_setCursor(uint8_t col, uint8_t row);
 void robot_print(char * _string, uint8_t col, uint8_t row);
 void robot_print_var(uint8_t var0, uint8_t var1, uint8_t col, uint8_t row);
+void welcomeMessage(void);
+uint8_t modeMenu(void);
 void robot_print_motor(uint8_t var0, uint8_t var1);
 void robot_print_LDR(uint8_t var2, uint8_t var3);
 

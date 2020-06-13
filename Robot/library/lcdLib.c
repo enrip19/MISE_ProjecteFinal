@@ -9,6 +9,7 @@
 #include "timerLib.h"
 #include "i2cLib.h"
 #include "modesLib.h"
+#include "miscLib.h"
 
 void lcd_send_nibble_cmd(uint8_t dada){                                 //funcion para enviar las direccion del esclavo
     uint8_t buffer[2];                                                  //definimos el tamaï¿½o del buffer
@@ -136,7 +137,70 @@ void robot_print_var(uint8_t var0, uint8_t var1, uint8_t col, uint8_t row){ //aq
     delay(10);                                                          //esperem a que processi la lcd
 }
 
+//Menus////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void welcomeMessage(void){
 
+    robot_print("Hellowda!!!",2,0);                                         //printem el missatge a la columna 2 fila de dalt
+    delay(2000);                                                            //esperem 2sec per poder veure el missatge
+    robot_print("Iniciant Sistema...", 0,1);                                //printem el missatge a la columna 0 fila de baix
+    delay(2000);                                                            //esperem 2sec per poder veure el missatge
+    lcd_clear();                                                            //borrem tota la pantalla
+    delay(10);                                                              //esperem a que processi la lcd
+}
+
+uint8_t modeMenu(void){
+
+    uint8_t mode;
+
+    robot_print("Tria mode:       ",0,0);
+
+    if(buttonRFlag == 1) cursor++;
+    else cursor = cursor;
+
+    if(cursor > 2) cursor = 0;
+
+    if(buttonLFlag == 1) enter = 1;
+    else enter = enter;
+
+    if(enter==1){
+        switch (cursor) {
+            case 1:  //autopilot
+                robot_print("AutoPilot selected    ",0,1);
+                delay(2000);
+                mode = 1;
+                break;
+            case 2:  //button mode
+                robot_print("ButtonMode selected    ",0,1);
+                delay(2000);
+                mode = 2;
+                break;
+            default: //wait
+                mode = 0;
+                break;
+        }
+    }
+    else{
+        switch (cursor) {
+            case 1:  //autopilot
+                robot_print("AutoPilot (LDR)  ",0,1);
+                break;
+            case 2:  //button mode
+                robot_print("Button Control    ",0,1);
+                break;
+            default: //wait
+                robot_print("Wait                ",0,1);
+                break;
+        }
+    }
+    controlFlag = 0;
+    buttonLFlag = 0;
+    buttonRFlag = 0;
+
+    P4->IE |= BIT1 | BIT2 | BIT3 | BIT4;
+    P1->IE |= BIT4 | BIT1;                                          //Tornem a habilitar les interrupcions de P1
+
+    return mode;
+}
 
 void robot_print_motor(uint8_t var0, uint8_t var1){
     uint8_t mida_txt;
@@ -172,3 +236,5 @@ void robot_print_LDR(uint8_t var2, uint8_t var3){
     lcd_setCursor(16, 0);
 
 }
+
+

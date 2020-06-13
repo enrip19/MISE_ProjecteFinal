@@ -20,7 +20,10 @@ int velButton;
 float girButtonF;
 int girButton;
 bool sentitButton;
+uint8_t modeSel;
 
 void buttonMode(void);
+void autopilot (uint8_t left, uint8_t right );
+
 
 #endif /* LIBRARY_MODESLIB_H_ */

@@ -111,14 +111,14 @@ void PORT1_IRQHandler(void){
     P1->IE = 0;                                                     //Deshabilitem les interrupcions de P1
     if (status == 0x04){                                            //Si la interrupcio prove del pin 1 (S1)
         //buttonLFlag = 1;                                            //Pujem la flag del boto S1 (esquerra = L)
-        buttonStatus = 0;
+        buttonLFlag = 1;
     }
     if (status == 0xA){                                             //Si la interrupcio prove del pin 4 (S2)
         //buttonRFlag = 1;                                            //Pujem la flag del boto S4 (dreta = R)
-        buttonStatus = 1;
+        buttonRFlag = 1;
 
     }
-    P1->IE |= BIT4 | BIT1;                                          //Tornem a habilitar les interrupcions de P1
+
 }
 
 void PORT4_IRQHandler(void){

@@ -160,41 +160,7 @@ void robotGO (float velocity,bool direcction, float gir){
     robot_print_motor(velL,velR);
 }
 
-void autopilot (uint8_t left, uint8_t right ){
-    float diff;
-    float vel, giro;
-    float velR, velL;
 
-    diff=left-right;
-    if (abs(diff)<10){
-        vel=left*(0.0039);
-        vel=vel*100;
-        motorGO (0x01,vel, 0);
-        motorGO (0x02,vel, 1);
-        robot_print_motor(vel,vel);}
-    else if (diff>0){
-        diff=(diff/255)*100;
-        velL=left*(0.0039);
-        velL=velL*100;
-        velR=left-abs(diff);
-        velR=velR/255;
-        velR=velR*100;
-
-        motorGO (0x01,velL, 0);
-        motorGO (0x02,velR, 1);
-        robot_print_motor(velL,velR);}
-        else if (diff<0){
-        diff=(diff/255)*100;
-        velR=right*(0.0039);
-        velR=velR*100;
-        velL=right-abs(diff);
-        velL=velL/255;
-        velL=velL*100;
-        motorGO (0x01,velL, 0);
-        motorGO (0x02,velR, 1);
-        robot_print_motor(velL,velR);}
-    ;
-    }
 
    // motorGO (0x01,velL, 0);
    // motorGO (0x02,velR, 1);
