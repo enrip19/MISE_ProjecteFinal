@@ -77,7 +77,7 @@ void motorWrite_LDR(uint8_t id, uint8_t value){
     //uint8_t param_pointer;
     uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
     uint8_t address = LDR_ADR;                                                      //escribim l'adrec,a del registre on guardem el valor de ldr
-    uint8_t length = sizeof(param) + 3;                                             //instruccio + adreÃ§a + parametres + checksum
+    uint8_t length = sizeof(param) + 3;                                             //instruccio + adreça + parametres + checksum
 
     send_Motor(id, length, instruccio, address, param);                             //finalment enviem la dada per UART al motor
 }
@@ -92,7 +92,7 @@ void  motorGO (uint8_t id, float vel, bool direccion){
      char param [] = {velhexL};
      uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
      uint8_t address = MOVING_SPEED;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
-     uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreÃ§a + parametres + checksum
+     uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
      send_Motor(id, length, instruccio, address, param);
 
     if(direccion){
@@ -100,14 +100,14 @@ void  motorGO (uint8_t id, float vel, bool direccion){
                   char param [] = {velhexH};
                   uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
                   uint8_t address = TURN_DIRECTION;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
-                  uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreÃ§a + parametres + checksum
+                  uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
                   send_Motor(id, length, instruccio, address, param);}
            else {
                velhexH=velhexH&back;
                    char param [] = {velhexH};
                    uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
                    uint8_t address = TURN_DIRECTION;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
-                   uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreÃ§a + parametres + checksum
+                   uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
                    send_Motor(id, length, instruccio, address, param);}
 
      }
@@ -157,98 +157,34 @@ void robotGO (float velocity,bool direcction, float gir){
 }
 
 void autopilot (uint8_t left, uint8_t right ){
-    float diff;
-    float vel, giro;
-    float velR, velL;
-
-    diff=left-right;
-    if (abs(diff)<10){
-        vel=left*(0.0039);
-        vel=vel*100;
-        motorGO (0x01,vel, 0);
-        motorGO (0x02,vel, 1);
-        robot_print_motor(vel,vel);}
-    else if (diff>0){
-        diff=(diff/255)*100;
-        velL=left*(0.0039);
-        velL=velL*100;
-        velR=left-abs(diff);
-        velR=velR/255;
-        velR=velR*100;
-
-        motorGO (0x01,velL, 0);
-        motorGO (0x02,velR, 1);
-        robot_print_motor(velL,velR);}
-        else if (diff<0){
-        diff=(diff/255)*100;
-        velR=right*(0.0039);
-        velR=velR*100;
-        velL=right-abs(diff);
-        velL=velL/255;
-        velL=velL*100;
-        motorGO (0x01,velL, 0);
-        motorGO (0x02,velR, 1);
-        robot_print_motor(velL,velR);}
-    ;
-    }
-
-   // motorGO (0x01,velL, 0);
-   // motorGO (0x02,velR, 1);
-
-/*
-void autopilot (uint8_t left, uint8_t right ){
-    //int diff;
     uint8_t diff;
     uint8_t vel, velR, velL, deltaL, deltaR, girVar;
-    vel = (uint8_t) velocity;
-    float vel;
     float giro;
-    float constante;
     diff =left-right;
 
     if (diff>0){
-        constante=0.0039;
-        giro=(left*constante);
-        giro=giro*100;
-        vel=giro;
-        giro=(-giro);
 
-        deltaL = 0;
-               deltaR = girVar;
+        giro=(left/255)*(-100);
+        robotGO (left,1,giro);
 
-        velL = vel - deltaL;
-        velR = vel - deltaR;
-
-        motorGO (0x01,velL, 0);
-        motorGO (0x02,velR, 1);
         deltaL = 0;
         deltaR = giro;
-        velL = left - deltaL;
-        velR = left - deltaR;
+        velL = vel - deltaL;
+        velR = vel - deltaR;
     }
     else {
-        giro=(right/255)*100;
+        giro=(right/255)*(-100);
         robotGO (right,1,giro);
-        //robotGO (right,1,giro);
-
-
 
         deltaR = 0;
         deltaL = giro;
-        velL = right - deltaL;
-        velR = right  - deltaR;
     }
-    printf("giro: %f, velL: %f, velR: %f\n",giro, vel, right);
 
+    velL = vel - deltaL;
+    velR = vel - deltaR;
 
-
-    /*motorGO (0x01,velL, 0);
+    motorGO (0x01,velL, 0);
     motorGO (0x02,velR, 1);
     robot_print_motor(velL,velR);
-    printf("velL: %d, velR: %d, giro: %d\n",velL, velR, giro);
 
-}*/
-
-
-
-
+}

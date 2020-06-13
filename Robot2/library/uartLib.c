@@ -12,7 +12,7 @@
 void Init_UART(void)
 {
     UCA0CTL0 |= UCSWRST;                                    //Fem un reset de la USCI i que estigui inoperativa
-    UCA0CTL1 = 0x00;                                        //UCSYNC=0 mode asÃ­ncron
+    UCA0CTL1 = 0x00;                                        //UCSYNC=0 mode asíncron
                                                             //UCMODEx=0 seleccionem mode UART
                                                             //UCSPB=0 nomes 1 stop bit
                                                             //UC7BIT=0 8 bits de dades
@@ -33,12 +33,12 @@ void Init_UART(void)
 
     P1SEL0 |= (BIT2 | BIT3);
 
-    P1SEL1 = 0;                                             //I/O funciÃ³: P1.2 = UARTRX, P1.3 = UARTTX
-    P1REN |= BIT2;                                          //amb resistÃ¨ncia activada de pull-up lâ€™entrada P4.52
+    P1SEL1 = 0;                                             //I/O funció: P1.2 = UARTRX, P1.3 = UARTTX
+    P1REN |= BIT2;                                          //amb resistència activada de pull-up l’entrada P4.52
     P1OUT |= BIT2;
     P1DIR |= BIT3;
 
-    UCA0CTL0 &= ~UCSWRST;                                   //Reactivem la lÃ­nia de comunicacions sÃ¨rie
+    UCA0CTL0 &= ~UCSWRST;                                   //Reactivem la línia de comunicacions sèrie
     UCA1IE |= UCRXIE;                                       //Aixo nomes sha dactivar quan tinguem la rutina de recepcio
 }
 
@@ -64,7 +64,7 @@ void send_UART(str_control *dataPointer){
             TXUAC0(dada);                                   //enviem la dada per uart
         }
     }
-    delay(45);                                             //quan acabem esperem 100 ms ja que es el que ens demanen els motors (o emulador) entre trames (hem forc,at la maquina per ferlo funcionar mes rapid)
+    delay(40);                                             //quan acabem esperem 100 ms ja que es el que ens demanen els motors (o emulador) entre trames (hem forc,at la maquina per ferlo funcionar mes rapid)
 }
 
 /*

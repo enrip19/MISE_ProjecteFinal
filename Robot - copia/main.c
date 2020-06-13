@@ -29,11 +29,7 @@ const uint8_t arrayDades [] = {  //Array dades
 
 
 
-float velButtonF = 0;
-int velButton = 0;
-float girButtonF = 0;
-int girButton = 0;
-bool sentitButton = 0;
+
 
 
 /*Daescripcio:
@@ -85,80 +81,43 @@ bool sentitButton = 0;
     __DSB();                                                                // Ensures SLEEPONEXIT takes effect immediately
 
 
-
+    float var;
+    int8_t varnum;
     //PROGRAMA
     while (1)
     {
-        //MODE DE CONTROL PER POLSADORS////////////////////////////////////////////////////////////////
-        //robotGO(100,0, 50);
-        switch (controlFlag) {
-            case 1: //forward
-                velButton+=10;
-                break;
-            case 2: //backward
-                velButton-=10;
-                break;
-            case 3: //left
-                if(velButton>=0){
-                    girButton-=10;
-                }
-                else if(velButton<0){
-                    girButton+=10;
-                }
+        //UART
+        //send_Motor(id, length, instruccio, address, p_array);                           //funcio per enviar instruccions als motors
 
-                if(girButton >= velButton) girButton = velButton;
-                else if(girButton <= -velButton) girButton = -velButton;
-                break;
-            case 4: //right
-                if(velButton>=0){
-                    girButton+=10;
-                }
-                else if(velButton<0){
-                    girButton-=10;
-                }
+        ///(DEBUGGING)
+        /*int j;
+        uint8_t dada;
+        for(j=0; j<sizeof(arrayDades);j++){
+            dada = arrayDades[j];
+            TXUAC0(dada);
+        }*///
 
-                if(girButton >= velButton) girButton = velButton;
-                else if(girButton <= -velButton) girButton = -velButton;
-                break;
-            default:
-                velButton = velButton;
-                girButton = girButton;
-                sentitButton = sentitButton;
-                break;
-        }
-        //printf("velButton: %d\n", velButton);
-        if(velButton<=0) sentitButton = 0;
-        else if(velButton>0) sentitButton = 1;
+        /*scanf("%f", &var);
+        varnum = (uint8_t) var;*/
 
-        if(velButton >= 100) velButton = 100;
-        else if(velButton <= -100) velButton = -100;
+        //PWM + LCD
+        robotGO(100,0, varnum);
 
-
-
-
-/*
-        controlFlag = 0;
-        velButtonF = (float) abs(velButton);
-        girButtonF = (float) girButton;
-        //printf("velButtonF: %f, sentitButton: %d, girButtonF: %f\n",velButtonF,sentitButton,girButtonF);
-        robotGO(velButtonF, sentitButton, girButtonF);
-
-        P4->IE |= BIT1 | BIT2 | BIT3 | BIT4;*/
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-
-        //PWM + LCD////////////////////////////////////////////////////////////////////////////////////
+        delay(20);                                                          // Delay
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
             adcR = read_LDR(newADCR);                                       //llegim el valor de ldr dret
             adcR = (adcR+oldadcR)>>1;                                       //fem una mitjana entre el valor actual i lanterior per estabilitzar la senyal
-            motorWrite_LDR(0x01, adcR);
-
-
             adcL = read_LDR(newADCL);
             adcL = (adcL+oldadcL)>>1;
-            motorWrite_LDR(0x02, adcL);
-            autopilot(adcL,adcR);
 
-            robot_print_LDR(adcR, adcL);
+            //robot_print_var(adcL,adcR, 6,1);
+
+
+            robot_print_variables(200,200,100,100);
+
+
+            motorWrite_LDR(0x01, adcR);
+            motorWrite_LDR(0x02, adcL);
 
             oldadcR = adcR;                                                 //propaguem la senyal
             oldadcL = adcL;
@@ -168,7 +127,7 @@ bool sentitButton = 0;
         }
         ADC14->IER0 |= ADC14_IER0_IE1;
         ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;              // Start a new sampling/conversion
-        ///////////////////////////////////////////////////////////////////////////////////////////////
+
 
         __sleep();                                                          //Posem el sistema a dormir (activem LPM0). En aquest cas ho hem configurat a l'inici del while
         __no_operation();                                                   // For debugger

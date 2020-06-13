@@ -136,14 +136,14 @@ bool sentitButton = 0;
 
 
 
-/*
+
         controlFlag = 0;
         velButtonF = (float) abs(velButton);
         girButtonF = (float) girButton;
         //printf("velButtonF: %f, sentitButton: %d, girButtonF: %f\n",velButtonF,sentitButton,girButtonF);
         robotGO(velButtonF, sentitButton, girButtonF);
 
-        P4->IE |= BIT1 | BIT2 | BIT3 | BIT4;*/
+        P4->IE |= BIT1 | BIT2 | BIT3 | BIT4;
         ///////////////////////////////////////////////////////////////////////////////////////////////
 
         //PWM + LCD////////////////////////////////////////////////////////////////////////////////////
@@ -156,9 +156,7 @@ bool sentitButton = 0;
             adcL = read_LDR(newADCL);
             adcL = (adcL+oldadcL)>>1;
             motorWrite_LDR(0x02, adcL);
-            autopilot(adcL,adcR);
-
-            robot_print_LDR(adcR, adcL);
+            robot_print_LDR(adcL, adcR);
 
             oldadcR = adcR;                                                 //propaguem la senyal
             oldadcL = adcL;

@@ -36,7 +36,7 @@ void delay(uint16_t temps_ms){
        TIMER_A0->CTL |= TACLR;                                      //fem un clear del ccr0 per assegurar que iniciem des de 0
        TIMER_A0->CTL |= MC__UP;                                     //Activem el mode UP per comencar a comptar
 
-            while (count<temps_ms)                                       //Esperem a que el count arribi a les iteracions demanades (en aquest cas milisec's)
+       while (count<temps_ms)                                       //Esperem a que el count arribi a les iteracions demanades (en aquest cas milisec's)
        {
        }
        TIMER_A0->CTL |= MC__STOP;                                   //Posem el timer en mode stop per a que no conti si no demanem la funcio

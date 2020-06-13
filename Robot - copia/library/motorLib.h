@@ -49,7 +49,6 @@ void motorWrite_LDR(uint8_t id, uint8_t value);
 
 void  motorGO (uint8_t id, float vel, bool direccion);
 void robotGO (float velocity,bool direcction, float gir);
-void autopilot (uint8_t left, uint8_t right );
 
 
 
