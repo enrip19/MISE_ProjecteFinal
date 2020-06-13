@@ -91,12 +91,12 @@ const uint8_t arrayDades [] = {  //Array dades
             }
             else {
                 //PWM + LCD////////////////////////////////////////////////////////////////////////////////////
-                                        adcR = read_LDR(newADCR);                                       //llegim el valor de ldr dret
-                                        //adcR = (adcR+oldadcR)>>1;                                       //fem una mitjana entre el valor actual i lanterior per estabilitzar la senyal
-                                        motorWrite_LDR(0x01, adcR);
-                                        adcL = read_LDR(newADCL);
-                                        //adcL = (adcL+oldadcL)>>1;
-                                        motorWrite_LDR(0x02, adcL);
+                adcR = read_LDR(newADCR);                                       //llegim el valor de ldr dret
+                //adcR = (adcR+oldadcR)>>1;                                       //fem una mitjana entre el valor actual i lanterior per estabilitzar la senyal
+                motorWrite_LDR(0x01, adcR);
+                adcL = read_LDR(newADCL);
+                //adcL = (adcL+oldadcL)>>1;
+                motorWrite_LDR(0x02, adcL);
 
                 switch (modeSel) {
                     case 1:
