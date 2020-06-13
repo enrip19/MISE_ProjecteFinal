@@ -6,4 +6,8 @@ encoding//Debug/objects.mk=UTF-8
 encoding//Debug/sources.mk=UTF-8
 encoding//Debug/subdir_rules.mk=UTF-8
 encoding//Debug/subdir_vars.mk=UTF-8
+<<<<<<< HEAD
 encoding//library/motorLib.c=UTF-8
+=======
+encoding//library/lcdLib.c=UTF-8
+>>>>>>> d15442804227faa68f4288d3f34caff6c56be343

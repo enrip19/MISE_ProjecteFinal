@@ -140,7 +140,10 @@ void robotGO (float velocity,bool direcction, float gir){
 
     velL = vel - deltaL;
     velR = vel - deltaR;
-    printf("vel: %d, velL: %d, velR: %d\n",vel, velL, velR);
+
+    if(velL > 100 & velL < 256) velL = 0;
+    if(velR > 100 & velR < 256) velR = 0;
+    //printf("vel: %d, velL: %d, velR: %d\n",vel, velL, velR);
 
 
 
@@ -153,6 +156,7 @@ void robotGO (float velocity,bool direcction, float gir){
         motorGO (0x01,velL, 1);
         motorGO (0x02,velR, 0);
     }
+
     robot_print_motor(velL,velR);
 }
 

@@ -19,6 +19,7 @@
 #include "library/lcdLib.h"
 #include "library/motorLib.h"
 #include "library/uartLib.h"
+#include "library/modesLib.h"
 
 //uint8_t buffer[2];
 
@@ -26,14 +27,6 @@
 const uint8_t arrayDades [] = {  //Array dades
     0xFF, 0xFF, 0X00, 0X04, 0x02, 0X03, 0x01, 0xF5
 };
-
-
-
-float velButtonF = 0;
-int velButton = 0;
-float girButtonF = 0;
-int girButton = 0;
-bool sentitButton = 0;
 
 
 /*Daescripcio:
@@ -89,6 +82,7 @@ bool sentitButton = 0;
     //PROGRAMA
     while (1)
     {
+<<<<<<< HEAD
         //MODE DE CONTROL PER POLSADORS////////////////////////////////////////////////////////////////
         //robotGO(100,0, 50);
         switch (controlFlag) {
@@ -145,6 +139,9 @@ bool sentitButton = 0;
 
         P4->IE |= BIT1 | BIT2 | BIT3 | BIT4;*/
         ///////////////////////////////////////////////////////////////////////////////////////////////
+=======
+        buttonMode();
+>>>>>>> d15442804227faa68f4288d3f34caff6c56be343
 
         //PWM + LCD////////////////////////////////////////////////////////////////////////////////////
         if(buttonStatus ==1){                                               //si apretem el bot� S2 (posem el buttonStatus a 1) i engeguem el sistema
@@ -164,7 +161,7 @@ bool sentitButton = 0;
             oldadcL = adcL;
         }
         else{                                                           //en cas d'apretar el boto de l'esquerra S1 (per apagar el led)
-            robot_print("Push S2 button",0,1);                          //printem un missatge d'espera a la columna 0 i linia 1
+            robot_print("Push S2 button   ",0,1);                          //printem un missatge d'espera a la columna 0 i linia 1
         }
         ADC14->IER0 |= ADC14_IER0_IE1;
         ADC14->CTL0 |= ADC14_CTL0_ENC | ADC14_CTL0_SC;              // Start a new sampling/conversion
