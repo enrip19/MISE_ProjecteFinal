@@ -74,7 +74,7 @@ void autopilot (uint8_t left, uint8_t right ){
     float velR, velL;
 
     diff=left-right;
-    if (abs(diff)<10){
+    if (abs(diff)<(sensibilidad)){
         vel=left*(0.0039);
         vel=vel*100;
         motorGO (0x01,vel, 0);
