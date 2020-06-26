@@ -91,7 +91,7 @@ const uint8_t arrayDades [] = {  //Array dades
             }
             else {
                 //PWM + LCD////////////////////////////////////////////////////////////////////////////////////
-                printf("%d\n", newADCL);
+                printf("%d\n", newADCR);
             	 adcL = read_LDR(newADCL);
 
                 //adcR = (adcR+oldadcR)>>1;                                       //fem una mitjana entre el valor actual i lanterior per estabilitzar la senyal

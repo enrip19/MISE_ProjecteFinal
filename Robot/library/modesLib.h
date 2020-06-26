@@ -14,7 +14,7 @@
 
 #ifndef LIBRARY_MODESLIB_H_
 #define LIBRARY_MODESLIB_H_
-#define sensibilidad 40
+#define sensibilidad 10
 
 float velButtonF;
 int velButton;
