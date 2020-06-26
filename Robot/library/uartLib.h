@@ -15,6 +15,7 @@
 
 #ifndef LIBRARY_UARTLIB_H_
 #define LIBRARY_UARTLIB_H_
+#define delayUART 50
 
 /*Variables*/
 //TX
