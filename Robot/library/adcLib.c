@@ -38,10 +38,10 @@ uint16_t read_LDR(uint16_t newADC){
     newValue = (uint8_t) newADC;
 
     if(adcFlag==1){                                                 //si la interrupcio de ADC esta activa (per tant s'aixeca la flag)
-        if(newValue >= 255){
+        if(newADC >= 255){
             valueADC = 255;
         }
-        else if(newValue <= 0){
+        else if(newADC <= 0){
             valueADC = 0;
         }
         else{
