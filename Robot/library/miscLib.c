@@ -121,23 +121,24 @@ void PORT1_IRQHandler(void){
 
 }
 
+/*ISR dels polsadors de control */
 void PORT4_IRQHandler(void){
-    uint8_t status = P4IV;
-     P4->IE = 0;
-    switch (status) {
-        case 0x04:
+    uint8_t status = P4IV;                                          //guardem el vector dinterrupcions del port 4
+     P4->IE = 0;                                                    //deshabilitem interrupcions dels polsadors de control
+    switch (status) {                                               //segons quin pin hagi saltat la seva flag
+        case 0x04:  //forward                                       //P4.1
             controlFlag = 1;
             //printf("upFlag\n");
             break;
-        case 0x06:
+        case 0x06:  //backward                                      //P4.2
             controlFlag = 2;
             //printf("downFlag\n");
             break;
-        case 0x08:
+        case 0x08:  //left                                          //P4.3
             controlFlag = 3;
             //printf("leftFlag\n");
             break;
-        case 0x0A:
+        case 0x0A:  //right                                         //P4.4
             controlFlag = 4;
             //printf("rightFlag\n");
             break;

@@ -71,51 +71,50 @@ const uint8_t arrayDades [] = {  //Array dades
     SCB->SCR &= ~SCB_SCR_SLEEPONEXIT_Msk;                                   // Wake up on exit from ISR
     __DSB();                                                                // Ensures SLEEPONEXIT takes effect immediately
 
-    cursor = 0;
-    enter = 0;
-    modeSel = 0;
+
+    //inicialitzacio de variables dels menus
+    cursor = 0;                                                             //variable que fa de cursor per apuntar al menu de modes
+    enter = 0;                                                              //variable que selecciona el mode demanat
+    modeSel = 0;                                                            //variable on es guarda el valor del mode seleccionat
 
     //PROGRAMA
     while (1)
     {
-
-        while (enter == 0){
-            modeSel = modeMenu();
+        //Menu de seleccio de mode/////////////////////////////////////////////////////////////////////////////
+        while (enter == 0){                                                 //menu de seleccio de mode (fins que no es selecciona un mode no sortim del bucle)
+            modeSel = modeMenu();                                           //funcio de seleccio de mode
         }
-
-        while (enter == 1){
-            if (buttonLFlag == 1) {
-                enter = 0;
-                buttonLFlag = 0;
-                break;
+        //Mode seleccionat/////////////////////////////////////////////////////////////////////////////////////
+        while (enter == 1){                                                 //quan hem seleccionat un mode
+            if (buttonLFlag == 1) {                                         //mirem si volem sortirne
+                enter = 0;                                                  //en cas afirmatiu retornem variable enter a 0 per anar al menu de seleccio de mode
+                buttonLFlag = 0;                                            //baixem la flag del polsador
+                break;                                                      //parem el bucle
             }
             else {
                 //PWM + LCD////////////////////////////////////////////////////////////////////////////////////
-                printf("%d\n", newADCR);
-            	 adcL = read_LDR(newADCL);
+                adcL = read_LDR(newADCL);                                   //llegim el valor al ldr esquerra
+                motorWrite_LDR(0x01, adcL);                                 //escribim la dada al motor
 
-                //adcR = (adcR+oldadcR)>>1;                                       //fem una mitjana entre el valor actual i lanterior per estabilitzar la senyal
-                motorWrite_LDR(0x01, adcL);
+                adcR = read_LDR(newADCR);                                   //llegim el valor de ldr dret
+                motorWrite_LDR(0x02, adcR);                                 //escribim la dada al motor
 
-                adcR = read_LDR(newADCR);                                       //llegim el valor de ldr dret
-                //adcL = (adcL+oldadcL)>>1;
-                motorWrite_LDR(0x02, adcR);
-                //printf("adcL: %d, adcR: %d\n",adcL, adcR);
-                switch (modeSel) {
+                //Seleccio de modes////////////////////////////////////////////////////////////////////////////
+                switch (modeSel) {                                          //segons el mode que triem
                     case 1:
-                        autopilot(adcL, adcR);
+                        autopilot(adcL, adcR);                              //mode de conduccio autonoma seguint la llum
                         break;
                     case 2:
-                        buttonMode();
+                        buttonMode();                                       //mode de conduccio a partir de botons
                         break;
                     default:
-                        robot_print("Waiting... LDR:            ",0,0);
+                        robot_print("Waiting... LDR:            ",0,0);     //mode despera on es mostra els valors dels ldr (sensors)
                         break;
                 }
 
-                robot_print_LDR(adcR, adcL);
+                robot_print_LDR(adcR, adcL);                                //printem a la lcd els valors dels ldr (o adc)
 
-                oldadcR = adcR;                                                 //propaguem la senyal
+                oldadcR = adcR;                                             //propaguem la senyal
                 oldadcL = adcL;
 
                 ADC14->IER0 |= ADC14_IER0_IE1;

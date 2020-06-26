@@ -35,9 +35,11 @@ uint16_t read_LDR(uint16_t newADC){
 
     uint16_t valueADC, newValue;
 
-    newValue = (uint8_t) newADC;
+    newValue = (uint8_t) newADC;                                    //fem el truncatge de 16bits a 8bits ja que hem calibrat els potenciòmetres dels ldr per a que no es superi el valor de 256 (2**8)
+                                                                    //ho necessitem ja que la memoria pels ldr nomes es de 1byte
 
     if(adcFlag==1){                                                 //si la interrupcio de ADC esta activa (per tant s'aixeca la flag)
+        //posem limits de valors (no seria necessari)
         if(newADC >= 255){
             valueADC = 255;
         }
@@ -55,11 +57,11 @@ uint16_t read_LDR(uint16_t newADC){
 
 // ADC14 interrupt service routine
 void ADC14_IRQHandler(void) {
-    if(ADC14->IFGR0 & ADC14_IFGR0_IFG1){
-        ADC14->IER0 &= ~ADC14_IER0_IE1;
-        newADCR = ADC14->MEM[1];
-        newADCL = ADC14->MEM[0];
-        adcFlag = 1;
+    if(ADC14->IFGR0 & ADC14_IFGR0_IFG1){                            //en cas de tenir una mesura
+        ADC14->IER0 &= ~ADC14_IER0_IE1;                             //deshabilitem interrupcions del canal 1 de lADC
+        newADCR = ADC14->MEM[1];                                    //guardem el valor del ADC 1 al ldrRight
+        newADCL = ADC14->MEM[0];                                    //guardem el valor del ADC 0 al ldrLeft
+        adcFlag = 1;                                                //activem la flag
     }
 
 }
