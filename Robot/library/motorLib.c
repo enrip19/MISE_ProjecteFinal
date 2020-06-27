@@ -85,79 +85,73 @@ void motorWrite_LDR(uint8_t id, uint8_t value){
 void  motorGO (uint8_t id, float vel, bool direccion){
 
      vel=vel/100;                                                                   //Calculamos el valor del porcentaje
-     uint16_t velocidad=(vel)*velmax;                                                //Obtenemos el valor equivalente de la velocidad, respecto del valor maximo
+     uint16_t velocidad=(vel)*velmax;                                               //Obtenemos el valor equivalente de la velocidad, respecto del valor maximo
      uint8_t velhexL= velocidad;                                                    //Hacemos un cast de la variable velocidad, ya que esta ocupa dos registros del motor
      uint8_t velhexH=velocidad>>8;
 
      char param [] = {velhexL};
-     uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
-     uint8_t address = MOVING_SPEED;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
-     uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
+     uint8_t instruccio = WRITE_MOT;                                                //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
+     uint8_t address = MOVING_SPEED;                                                //escribim l'adrec,a del registre on guardem el valor de ldr
+     uint8_t length = sizeof(param) + 3;                                            //instruccio + adreça + parametres + checksum
      send_Motor(id, length, instruccio, address, param);
 
     if(direccion){
               velhexH=velhexH^front;
                   char param [] = {velhexH};
-                  uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
-                  uint8_t address = TURN_DIRECTION;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
-                  uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
+                  uint8_t instruccio = WRITE_MOT;                                   //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
+                  uint8_t address = TURN_DIRECTION;                                 //escribim l'adrec,a del registre on guardem el valor de ldr
+                  uint8_t length = sizeof(param) + 3;                               //instruccio + adreça + parametres + checksum
                   send_Motor(id, length, instruccio, address, param);}
            else {
                velhexH=velhexH&back;
                    char param [] = {velhexH};
-                   uint8_t instruccio = WRITE_MOT;                                                 //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
-                   uint8_t address = TURN_DIRECTION;                                                         //escribim l'adrec,a del registre on guardem el valor de ldr
-                   uint8_t length = sizeof(param) + 3;                                                 //instruccio + adreça + parametres + checksum
+                   uint8_t instruccio = WRITE_MOT;                                  //escribim a la instruccio el valor de WRITE (escriure a un registre del motor)
+                   uint8_t address = TURN_DIRECTION;                                //escribim l'adrec,a del registre on guardem el valor de ldr
+                   uint8_t length = sizeof(param) + 3;                              //instruccio + adreça + parametres + checksum
                    send_Motor(id, length, instruccio, address, param);}
 
      }
 
-void robotGO (float velocity,bool direcction, float gir){
+void robotGO (float velocity,bool sentit, float gir){
 
-    //conversio de percentatge a 8bits
-
-    uint8_t vel, velR, velL, deltaL, deltaR, girVar;
-    vel = (uint8_t) velocity;
+    uint8_t vel, velR, velL, deltaL, deltaR, girVar;                                //delta sera el valor que restarem segons el gir que haguem de fer
+    vel = (uint8_t) velocity;                                                       //conversio de percentatge a 8bits
     //girVar = (uint8_t) gir;
 
-    if (gir > 0){
-        girVar = (uint8_t) gir;
-        deltaL = 0;
-        deltaR = girVar;
+    if (gir > 0){                                                                   //si el gir es positiu farem que giri a la dreta
+        girVar = (uint8_t) gir;                                                     //el transformem a 1byte
+        deltaL = 0;                                                                 //mantindrem el motor esquerra a maxima velocitat
+        deltaR = girVar;                                                            //i el dret li restarem el valor de gir demanat
     }
-    else if (gir < 0){
-        girVar = (uint8_t) abs(gir);
+    else if (gir < 0){                                                              //si es negatiu girara a la esquerra
+        girVar = (uint8_t) abs(gir);                                                //conversio a positiu i a 1 byte
 
-        deltaR = 0;
-        deltaL = girVar;
+        deltaR = 0;                                                                 //mantenim el motor dret a maxima velocitat
+        deltaL = girVar;                                                            //i al esquerra li restarem el valor de gir demanat
         //printf("girVar: %d, deltaL: %d\n",girVar, deltaL);
     }
-    else{
-        deltaR = 0;
+    else{                                                                           //en cas de tenir gir =0, voldrem anar rectes
+        deltaR = 0;                                                                 //no apliquem cap delta a cap dels motor
         deltaL = 0;
     }
 
-
-    velL = vel - deltaL;
+    velL = vel - deltaL;                                                            //apliquem les deltes als dos motors
     velR = vel - deltaR;
 
-    if(velL > 100 & velL < 256) velL = 0;
+    if(velL > 100 & velL < 256) velL = 0;                                           //en cas de superar algun dels maxims (100%) la velocitat la reduim a 0
     if(velR > 100 & velR < 256) velR = 0;
     //printf("vel: %d, velL: %d, velR: %d\n",vel, velL, velR);
 
-
-
-
-    if (direcction){
+    if (sentit){                                                                    //si el sentit es 1, fem que el robot vagi endarrera (mot esqurra en CW i mot dret en CCW)
         motorGO (0x01,velL, 0);
         motorGO (0x02,velR, 1);
     }
-    else{
+    else{                                                                           //so el sentit es 0, fem que el robot vagi endavant (mot esquerra en CCW i mot dret en CW)
         motorGO (0x01,velL, 1);
         motorGO (0x02,velR, 0);
     }
 
-    robot_print_motor(velL,velR);
+    robot_print_motor(velL,velR);                                                   //printem per pantalla els valors de  velocitat
 }
 
 
